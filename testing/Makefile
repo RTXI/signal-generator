@@ -1,21 +1,23 @@
 PLUGIN_NAME = signal_generator
 
-HEADERS = signal-generator.h
+HEADERS = signal-generator.h \
+          gen_mono.h\
+          gen_sine.h\
+          gen_biphase.h\
+          gen_saw.h\
+          gen_zap.h\
+          generator.h
 
 SOURCES = signal-generator.cpp \
           moc_signal-generator.cpp\
           gen_sine.cpp\
-          gen_sine.h\
           gen_biphase.cpp\
-          gen_biphase.h\
           gen_mono.cpp\
-          gen_mono.h\
           gen_saw.cpp\
-          gen_saw.h\
           gen_zap.cpp\
-          gen_zap.h\
-          generator.cpp\
-          generator.h
+          generator.cpp
+
+LIBS = -I/usr/local/lib/rtxi_includes
 
 ### Do not edit below this line ###
 

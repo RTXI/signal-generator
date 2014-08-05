@@ -39,13 +39,12 @@ public:
 
   void
   execute(void);
-  void
-  createGUI(DefaultGUIModel::variable_t *, int);
+//  void createGUI(DefaultGUIModel::variable_t *, int);
   void customizeGUI(void);
 
   enum mode_t
   {
-    SINE, MONOSQUARE, BISQUARE, SAWTOOTH, ZAP,
+    SINE=0, MONOSQUARE, BISQUARE, SAWTOOTH, ZAP,
   };
 
 public slots:

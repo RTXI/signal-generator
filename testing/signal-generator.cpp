@@ -61,9 +61,10 @@ SigGen::SigGen(void) :
   printf("Starting SigGen Module:\n");
   initParameters();
   initStimulus();
-  createGUI(vars, num_vars); // this is required to create the GUI
+  DefaultGUIModel::createGUI(vars, num_vars); // this is required to create the GUI
+  customizeGUI();
   update(INIT);
-  refresh();
+  DefaultGUIModel::refresh();
 }
 
 SigGen::~SigGen(void)
@@ -116,8 +117,8 @@ SigGen::update(DefaultGUIModel::update_flags_t flag)
     setParameter("Width", QString::number(width));
     setParameter("Amplitude", QString::number(amp));
     setState("Time (s)", systime);
+    waveShape->setCurrentIndex(0);
     updateMode(0);
-    waveShape->setCurrentIndex(mode);
     break;
   case MODIFY:
     delay = getParameter("Delay").toDouble();
@@ -237,120 +238,14 @@ void SigGen::customizeGUI(void) {
 	QVBoxLayout *modeBoxLayout = new QVBoxLayout(modeBox);
 	waveShape = new QComboBox;
 	modeBoxLayout->addWidget(waveShape);
-	waveShape->addItem("Sine Wave");
-	waveShape->addItem("Monophasic Sqare Wave");
-	waveShape->addItem("Biphasic Square Wave");
-	waveShape->addItem("Sawtooth Wave");
-	waveShape->addItem("Zap Stimulus");
-	waveShape->setToolTip("Choose a signal to generate");
-  QObject::connect(waveShape,SIGNAL(activated(int)), this, SLOT(updateMode(int)));
+	waveShape->insertItem(0, "Sine Wave");
+	waveShape->insertItem(1, "Monophasic Sqare Wave");
+	waveShape->insertItem(2, "Biphasic Square Wave");
+	waveShape->insertItem(3, "Sawtooth Wave");
+	waveShape->insertItem(4, "Zap Stimulus");
+//	waveShape->setToolTip("Choose a signal to generate");
+	QObject::connect(waveShape,SIGNAL(activated(int)), this, SLOT(updateMode(int)));
 
-	customlayout->addWidget(modeBox);
+	customlayout->addWidget(modeBox, 0, 0);
 	setLayout(customlayout);
 }
-/*
-void
-SigGen::createGUI(DefaultGUIModel::variable_t *var, int size)
-{
-
-  QBoxLayout *layout = new QVBoxLayout(this);
-
-  QVButtonGroup *modeBox = new QVButtonGroup("Signal Type", this);
-
-  waveShape = new QComboBox(FALSE, modeBox, "Signal Type:");
-  waveShape->insertItem("Sine Wave");
-  waveShape->insertItem("Monophasic Square Wave");
-  waveShape->insertItem("Biphasic Square Wave");
-  waveShape->insertItem("Sawtooth Wave");
-  waveShape->insertItem("ZAP Stimulus");
-  QToolTip::add(waveShape, "Choose a signal to generate.");
-  QObject::connect(waveShape,SIGNAL(activated(int)), this, SLOT(updateMode(int)));
-
-  // add custom GUI components to layout above default_gui_model components
-  layout->addWidget(modeBox);
-  //layout->addWidget(waveShape);
-
-  QScrollView *sv = new QScrollView(this);
-  sv->setResizePolicy(QScrollView::AutoOneFit);
-  layout->addWidget(sv);
-
-  QWidget *viewport = new QWidget(sv->viewport());
-  sv->addChild(viewport);
-  QGridLayout *scrollLayout = new QGridLayout(viewport, 1, 2);
-
-  size_t nstate = 0, nparam = 0, nevent = 0, ncomment = 0;
-  for (size_t i = 0; i < num_vars; i++)
-    {
-      if (vars[i].flags & (PARAMETER | STATE | EVENT | COMMENT))
-        {
-          param_t param;
-
-          param.label = new QLabel(vars[i].name, viewport);
-          scrollLayout->addWidget(param.label, parameter.size(), 0);
-          param.edit = new DefaultGUILineEdit(viewport);
-          scrollLayout->addWidget(param.edit, parameter.size(), 1);
-
-          QToolTip::add(param.label, vars[i].description);
-          QToolTip::add(param.edit, vars[i].description);
-
-          if (vars[i].flags & PARAMETER)
-            {
-              if (vars[i].flags & DOUBLE)
-                {
-                  param.edit->setValidator(new QDoubleValidator(param.edit));
-                  param.type = PARAMETER | DOUBLE;
-                }
-              else if (vars[i].flags & UINTEGER)
-                {
-                  QIntValidator *validator = new QIntValidator(param.edit);
-                  param.edit->setValidator(validator);
-                  validator->setBottom(0);
-                  param.type = PARAMETER | UINTEGER;
-                }
-              else if (vars[i].flags & INTEGER)
-                {
-                  param.edit->setValidator(new QIntValidator(param.edit));
-                  param.type = PARAMETER | INTEGER;
-                }
-              else
-                param.type = PARAMETER;
-              param.index = nparam++;
-              param.str_value = new QString;
-            }
-          else if (vars[i].flags & STATE)
-            {
-              param.edit->setReadOnly(true);
-              param.edit->setPaletteForegroundColor(Qt::darkGray);
-              param.type = STATE;
-              param.index = nstate++;
-            }
-          else if (vars[i].flags & EVENT)
-            {
-              param.edit->setReadOnly(true);
-              param.type = EVENT;
-              param.index = nevent++;
-            }
-          else if (vars[i].flags & COMMENT)
-            {
-              param.type = COMMENT;
-              param.index = ncomment++;
-            }
-
-          parameter[vars[i].name] = param;
-        }
-    }
-
-  QHBox *hbox1 = new QHBox(this);
-  pauseButton = new QPushButton("Pause", hbox1);
-  pauseButton->setToggleButton(true);
-  QObject::connect(pauseButton,SIGNAL(toggled(bool)),this,SLOT(pause(bool)));
-  QPushButton *modifyButton = new QPushButton("Modify", hbox1);
-  QObject::connect(modifyButton,SIGNAL(clicked(void)),this,SLOT(modify(void)));
-  QPushButton *unloadButton = new QPushButton("Unload", hbox1);
-  QObject::connect(unloadButton,SIGNAL(clicked(void)),this,SLOT(exit(void)));
-  layout->addWidget(hbox1);
-
-  show();
-
-}
-*/
