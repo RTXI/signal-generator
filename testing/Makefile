@@ -19,7 +19,7 @@ SOURCES = signal-generator.cpp \
 			 gen_whitenoise.cpp\
 			 gen_zap.cpp
 
-LIBS = -I/usr/local/lib/rtxi_includes
+LIBS = -lgsl -lgslcblas
 
 ### Do not edit below this line ###
 
