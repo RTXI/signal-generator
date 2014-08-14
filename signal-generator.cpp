@@ -16,7 +16,7 @@
 
  */
 
-#include <signal-generator.h>
+#include "signal-generator.h"
 #include <math.h>
 #include <default_gui_model.h>
 #include <main_window.h>

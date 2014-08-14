@@ -3,7 +3,7 @@
 **Requirements:** Generator class (included)  
 **Limitations:** none noted   
 
-![EDIT THIS LINK](http://www.rtxi.org/wp-content/uploads/2012/02/siggen.png)
+![Signal Generator GUI](signal-generator.png)
 
 This module generates the following signals:
 1. Sine Wave: needs frequency and amplitude
