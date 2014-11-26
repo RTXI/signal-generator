@@ -5,6 +5,7 @@
 
 ![Signal Generator GUI](signal-generator.png)
 
+<!--start-->
 This module generates the following signals:
 1. Sine Wave: needs frequency and amplitude
 2. Monophasic Square Wave: needs delay, pulse width, and pulse amplitude
@@ -13,6 +14,7 @@ This module generates the following signals:
 5. ZAP Stimulus: needs starting and ending frequencies, amplitude, and duration of ZAP
 
 All the signals are continuous except for the ZAP stimulus, which has a specified duration. Only the relevant parameters are used to generate the waveforms. This module is already included in RTXI v1.3+. You may edit this source code (eg. adding additional waveforms). Compiling and installing this module will then overwrite the bundled version of the signal generator.
+<!--end-->
 
 ####Output Channels
 1. output(0) – “Signal Waveform”
