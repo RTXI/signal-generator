@@ -18,10 +18,12 @@
 *.la
 *.a
 *.lib
+.libs/
+
+# Qt Mocs
+moc_*
 
 # Executables
 *.exe
 *.out
 *.app
-
-

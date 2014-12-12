@@ -58,7 +58,6 @@ SigGen::SigGen(void) :
         "Sawtooth Wave: delay, triangle width, triangle peak amplitude<br>"
         "ZAP stimulus: initial frequency, maximum frequency, duration of ZAP<br><br>"
         "The ZAP stimulus has the duration specified. All other signals are continuous signals.</p>");
-  printf("Starting SigGen Module:\n");
   initParameters();
   initStimulus();
   DefaultGUIModel::createGUI(vars, num_vars); // this is required to create the GUI
@@ -202,31 +201,26 @@ SigGen::updateMode(int index)
   if (index == 0)
     {
       mode = SINE;
-      printf("Signal generator now set to sine wave\n");
       update(MODIFY);
     }
   else if (index == 1)
     {
       mode = MONOSQUARE;
-      printf("Signal generator now set to monophasic square wave\n");
       update(MODIFY);
     }
   else if (index == 2)
     {
       mode = BISQUARE;
-      printf("Signal generator now set to biphasic square wave\n");
       update(MODIFY);
     }
   else if (index == 3)
     {
       mode = SAWTOOTH;
-      printf("Signal generator now set to sawtooth wave\n");
       update(MODIFY);
     }
   else if (index == 4)
     {
       mode = ZAP;
-      printf("Signal generator now set to a ZAP stimulus\n");
       update(MODIFY);
     }
 }
