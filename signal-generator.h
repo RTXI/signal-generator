@@ -1,16 +1,16 @@
 /*
  Copyright (C) 2011 Georgia Institute of Technology
- 
+
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
- 
+
  This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
- 
+
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -29,23 +29,22 @@
 class SigGen : public DefaultGUIModel
 {
 
-Q_OBJECT
+    Q_OBJECT
 
 public:
 
-  SigGen(void);
-  virtual
-  ~SigGen(void);
+    SigGen(void);
+    virtual
+    ~SigGen(void);
 
-  void
-  execute(void);
+    void
+    execute(void);
 //  void createGUI(DefaultGUIModel::variable_t *, int);
-  void customizeGUI(void);
+    void customizeGUI(void);
 
-  enum mode_t
-  {
-    SINE=0, MONOSQUARE, BISQUARE, SAWTOOTH, ZAP,
-  };
+    enum mode_t {
+        SINE=0, MONOSQUARE, BISQUARE, SAWTOOTH, ZAP,
+    };
 
 public slots:
 
@@ -53,40 +52,40 @@ signals: // custom signals
 
 protected:
 
-virtual void
-update(DefaultGUIModel::update_flags_t);
+    virtual void
+    update(DefaultGUIModel::update_flags_t);
 
 private:
 
-  void
-  initParameters();
-  void
-  initStimulus(); // creates SigGen stimuli
+    void
+    initParameters();
+    void
+    initStimulus(); // creates SigGen stimuli
 
-  double freq;
-  double delay;
-  double width;
-  double amp;
-  double freq2;
-  double ZAPduration;
-  mode_t mode;
+    double freq;
+    double delay;
+    double width;
+    double amp;
+    double freq2;
+    double ZAPduration;
+    mode_t mode;
 
-  GeneratorSine sineWave;
-  GeneratorMono monoWave;
-  GeneratorBiphase biWave;
-  GeneratorSaw sawWave;
-  GeneratorZap zapWave;
+    GeneratorSine sineWave;
+    GeneratorMono monoWave;
+    GeneratorBiphase biWave;
+    GeneratorSaw sawWave;
+    GeneratorZap zapWave;
 
-  long long count;
-  double systime;
-  double dt;
+    long long count;
+    double systime;
+    double dt;
 
-  // QT components
-  QPushButton *sineButton;
-  QComboBox *waveShape;
+    // QT components
+    QPushButton *sineButton;
+    QComboBox *waveShape;
 
 private slots:
 
-void
-updateMode(int);
+    void
+    updateMode(int);
 };
