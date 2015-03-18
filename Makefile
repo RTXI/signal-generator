@@ -1,25 +1,21 @@
-PLUGIN_NAME = signal_generator
+PLUGIN_NAME = siggen
 
-HEADERS = signal-generator.h \
-          /usr/local/lib/rtxi_includes/generator.h\
-          /usr/local/lib/rtxi_includes/gen_biphase.h\
-			 /usr/local/lib/rtxi_includes/gen_mono.h\
-			 /usr/local/lib/rtxi_includes/gen_saw.h\
-			 /usr/local/lib/rtxi_includes/gen_sine.h\
-			 /usr/local/lib/rtxi_includes/gen_whitenoise.h\
-			 /usr/local/lib/rtxi_includes/gen_zap.h
+HEADERS = siggen.h
 
-SOURCES = signal-generator.cpp \
-          moc_signal-generator.cpp\
-          /usr/local/lib/rtxi_includes/generator.cpp\
-          /usr/local/lib/rtxi_includes/gen_biphase.cpp\
-			 /usr/local/lib/rtxi_includes/gen_mono.cpp\
-			 /usr/local/lib/rtxi_includes/gen_saw.cpp\
-			 /usr/local/lib/rtxi_includes/gen_sine.cpp\
-			 /usr/local/lib/rtxi_includes/gen_whitenoise.cpp\
-			 /usr/local/lib/rtxi_includes/gen_zap.cpp
-
-LIBS = -lgsl -lgslcblas
+SOURCES = siggen.cpp \
+          moc_siggen.cpp\
+          ../include/gen_sine.cpp\
+          ../include/gen_sine.h\
+          ../include/gen_biphase.cpp\
+          ../include/gen_biphase.h\
+          ../include/gen_mono.cpp\
+          ../include/gen_mono.h\
+          ../include/gen_saw.cpp\
+          ../include/gen_saw.h\
+          ../include/gen_zap.cpp\
+          ../include/gen_zap.h\
+          ../include/generator.cpp\
+          ../include/generator.h
 
 ### Do not edit below this line ###
 
