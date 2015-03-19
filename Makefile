@@ -1,23 +1,25 @@
 PLUGIN_NAME = signal_generator
 
+RTXI_INCLUDES = /usr/local/lib/rtxi_includes
+
 HEADERS = signal-generator.h \
-          /usr/local/lib/rtxi_includes/generator.h\
-          /usr/local/lib/rtxi_includes/gen_biphase.h\
-			 /usr/local/lib/rtxi_includes/gen_mono.h\
-			 /usr/local/lib/rtxi_includes/gen_saw.h\
-			 /usr/local/lib/rtxi_includes/gen_sine.h\
-			 /usr/local/lib/rtxi_includes/gen_whitenoise.h\
-			 /usr/local/lib/rtxi_includes/gen_zap.h
+          $(RTXI_INCLUDES)/generator.h\
+          $(RTXI_INCLUDES)/gen_biphase.h\
+			 $(RTXI_INCLUDES)/gen_mono.h\
+			 $(RTXI_INCLUDES)/gen_saw.h\
+			 $(RTXI_INCLUDES)/gen_sine.h\
+			 $(RTXI_INCLUDES)/gen_whitenoise.h\
+			 $(RTXI_INCLUDES)/gen_zap.h
 
 SOURCES = signal-generator.cpp \
           moc_signal-generator.cpp\
-          /usr/local/lib/rtxi_includes/generator.cpp\
-          /usr/local/lib/rtxi_includes/gen_biphase.cpp\
-			 /usr/local/lib/rtxi_includes/gen_mono.cpp\
-			 /usr/local/lib/rtxi_includes/gen_saw.cpp\
-			 /usr/local/lib/rtxi_includes/gen_sine.cpp\
-			 /usr/local/lib/rtxi_includes/gen_whitenoise.cpp\
-			 /usr/local/lib/rtxi_includes/gen_zap.cpp
+          $(RTXI_INCLUDES)/generator.cpp\
+          $(RTXI_INCLUDES)/gen_biphase.cpp\
+			 $(RTXI_INCLUDES)/gen_mono.cpp\
+			 $(RTXI_INCLUDES)/gen_saw.cpp\
+			 $(RTXI_INCLUDES)/gen_sine.cpp\
+			 $(RTXI_INCLUDES)/gen_whitenoise.cpp\
+			 $(RTXI_INCLUDES)/gen_zap.cpp
 
 LIBS = -lgsl -lgslcblas
 
