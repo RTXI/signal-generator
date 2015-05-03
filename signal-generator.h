@@ -39,7 +39,6 @@ public:
 
     void
     execute(void);
-//  void createGUI(DefaultGUIModel::variable_t *, int);
     void customizeGUI(void);
 
     enum mode_t {
