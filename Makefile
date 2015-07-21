@@ -8,7 +8,6 @@ HEADERS = signal-generator.h \
 			 $(RTXI_INCLUDES)/gen_mono.h\
 			 $(RTXI_INCLUDES)/gen_saw.h\
 			 $(RTXI_INCLUDES)/gen_sine.h\
-			 $(RTXI_INCLUDES)/gen_whitenoise.h\
 			 $(RTXI_INCLUDES)/gen_zap.h
 
 SOURCES = signal-generator.cpp \
@@ -18,7 +17,6 @@ SOURCES = signal-generator.cpp \
 			 $(RTXI_INCLUDES)/gen_mono.cpp\
 			 $(RTXI_INCLUDES)/gen_saw.cpp\
 			 $(RTXI_INCLUDES)/gen_sine.cpp\
-			 $(RTXI_INCLUDES)/gen_whitenoise.cpp\
 			 $(RTXI_INCLUDES)/gen_zap.cpp
 
 LIBS = -lgsl -lgslcblas
