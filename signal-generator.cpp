@@ -54,7 +54,6 @@ static SigGen::variable_t vars[] = {
 		"ZAP duration (s)", "ZAP duration (s)", DefaultGUIModel::PARAMETER
 			| DefaultGUIModel::DOUBLE,
 	},
-	{ "Time (s)", "Time (s)", DefaultGUIModel::STATE, },
 };
 
 static size_t num_vars = sizeof(vars) / sizeof(DefaultGUIModel::variable_t);
@@ -85,8 +84,6 @@ SigGen::~SigGen(void)
 
 void SigGen::execute(void)
 {
-	systime = count * dt; // time in seconds
-
 	switch (mode) {
 		case SINE:
 			output(0) = sineWave.get();
@@ -107,7 +104,6 @@ void SigGen::execute(void)
 			output(0) = 0;
 			break;
 	}
-	count++; // increment time
 }
 
 void SigGen::update(DefaultGUIModel::update_flags_t flag)
@@ -120,7 +116,6 @@ void SigGen::update(DefaultGUIModel::update_flags_t flag)
 			setParameter("Delay", QString::number(delay));
 			setParameter("Width", QString::number(width));
 			setParameter("Amplitude", QString::number(amp));
-			setState("Time (s)", systime);
 			waveShape->setCurrentIndex(0);
 			updateMode(0);
 			break;
@@ -142,8 +137,6 @@ void SigGen::update(DefaultGUIModel::update_flags_t flag)
 			zapWave.setIndex(0);
 			break;
 		case UNPAUSE:
-			systime = 0;
-			count = 0;
 			break;
 		default:
 			break;
@@ -161,8 +154,6 @@ void SigGen::initParameters()
 	ZAPduration = 10; //s
 
 	dt = RT::System::getInstance()->getPeriod() * 1e-9; // s
-	systime = 0;
-	count = 0;
 	output(0) = 0;
 }
 

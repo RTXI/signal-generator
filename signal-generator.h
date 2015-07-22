@@ -75,8 +75,6 @@ private:
     GeneratorSaw sawWave;
     GeneratorZap zapWave;
 
-    long long count;
-    double systime;
     double dt;
 
     // QT components
