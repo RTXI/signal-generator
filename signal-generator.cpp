@@ -75,7 +75,6 @@ SigGen::SigGen(void) :
 	customizeGUI();
 	update(INIT);
 	refresh();
-	QTimer::singleShot(0, this, SLOT(resizeMe()));
 }
 
 SigGen::~SigGen(void)
@@ -224,4 +223,5 @@ void SigGen::customizeGUI(void)
 	QObject::connect(waveShape,SIGNAL(activated(int)), this, SLOT(updateMode(int)));
 	customlayout->addWidget(modeBox, 0, 0);
 	setLayout(customlayout);
+	subWindow->adjustSize();
 }
