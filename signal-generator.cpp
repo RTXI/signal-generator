@@ -20,7 +20,6 @@
 #include <math.h>
 #include <default_gui_model.h>
 #include <main_window.h>
-#include <QtGui>
 
 	extern "C" Plugin::Object *
 createRTXIPlugin(void)
@@ -75,6 +74,7 @@ SigGen::SigGen(void) :
 	customizeGUI();
 	update(INIT);
 	refresh();
+	resizeMe();
 }
 
 SigGen::~SigGen(void)
@@ -223,5 +223,4 @@ void SigGen::customizeGUI(void)
 	QObject::connect(waveShape,SIGNAL(activated(int)), this, SLOT(updateMode(int)));
 	customlayout->addWidget(modeBox, 0, 0);
 	setLayout(customlayout);
-	subWindow->adjustSize();
 }
