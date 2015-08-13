@@ -28,13 +28,13 @@ createRTXIPlugin(void)
 }
 
 static SigGen::variable_t vars[] = {
-	{ "Signal Waveform", "Noise Waveform", DefaultGUIModel::OUTPUT, },
+	{ "Signal Waveform", "Signal Waveform", DefaultGUIModel::OUTPUT, },
 	{
-		"Delay", "Delay", DefaultGUIModel::PARAMETER
+		"Delay (s)", "Delay (s)", DefaultGUIModel::PARAMETER
 			| DefaultGUIModel::DOUBLE,
 	},
 	{
-		"Width", "Width", DefaultGUIModel::PARAMETER
+		"Width (s)", "Width (s)", DefaultGUIModel::PARAMETER
 			| DefaultGUIModel::DOUBLE,
 	},
 	{
@@ -42,7 +42,7 @@ static SigGen::variable_t vars[] = {
 		DefaultGUIModel::PARAMETER | DefaultGUIModel::DOUBLE,
 	},
 	{
-		"Amplitude", "Amplitude", DefaultGUIModel::PARAMETER
+		"Amplitude (V)", "Amplitude (V)", DefaultGUIModel::PARAMETER
 			| DefaultGUIModel::DOUBLE,
 	},
 	{
@@ -63,8 +63,8 @@ SigGen::SigGen(void) :
 	setWhatsThis(
 			"<p><b>Signal Generator:</b></p><p>Generates noise of the type specified with the relevant parameters:<br><br>"
 			"Sine Wave: frequency, amplitude<br>"
-			"Monophasic Square Wave: delay, pulse width, pulse amplitude<br>"
-			"Biphasic Square Wave: delay, pulse width, pulse amplitude<br>"
+			"Monophasic Square Wave: delay, width, amplitude<br>"
+			"Biphasic Square Wave: delay, width, amplitude<br>"
 			"Sawtooth Wave: delay, triangle width, triangle peak amplitude<br>"
 			"ZAP stimulus: initial frequency, maximum frequency, duration of ZAP<br><br>"
 			"The ZAP stimulus has the duration specified. All other signals are continuous signals.</p>");
@@ -112,19 +112,19 @@ void SigGen::update(DefaultGUIModel::update_flags_t flag)
 			setParameter("Freq (Hz)", QString::number(freq));
 			setParameter("ZAP max Freq (Hz)", QString::number(freq2));
 			setParameter("ZAP duration (s)", QString::number(ZAPduration));
-			setParameter("Delay", QString::number(delay));
-			setParameter("Width", QString::number(width));
-			setParameter("Amplitude", QString::number(amp));
+			setParameter("Delay (s)", QString::number(delay));
+			setParameter("Width (s)", QString::number(width));
+			setParameter("Amplitude (V)", QString::number(amp));
 			waveShape->setCurrentIndex(0);
 			updateMode(0);
 			break;
 		case MODIFY:
-			delay = getParameter("Delay").toDouble();
+			delay = getParameter("Delay (s)").toDouble();
 			freq = getParameter("Freq (Hz)").toDouble();
 			freq2 = getParameter("ZAP max Freq (Hz)").toDouble();
 			ZAPduration = getParameter("ZAP duration (s)").toDouble();
-			width = getParameter("Width").toDouble();
-			amp = getParameter("Amplitude").toDouble();
+			width = getParameter("Width (s)").toDouble();
+			amp = getParameter("Amplitude (V)").toDouble();
 			mode = mode_t(waveShape->currentIndex());
 			initStimulus();
 			break;
@@ -164,19 +164,19 @@ void SigGen::initStimulus()
 			sineWave.clear();
 			sineWave.init(freq, amp, dt);
 			break;
-		case MONOSQUARE: // triangular
+		case MONOSQUARE: 
 			monoWave.clear();
 			monoWave.init(delay, width, amp, dt);
 			break;
-		case BISQUARE: // Hamming
+		case BISQUARE: 
 			biWave.clear();
 			biWave.init(delay, width, amp, dt);
 			break;
-		case SAWTOOTH: // Hann
+		case SAWTOOTH:
 			sawWave.clear();
 			sawWave.init(delay, width, amp, dt);
 			break;
-		case ZAP: // Dolph-Chebyshev
+		case ZAP: 
 			zapWave.clear();
 			zapWave.init(freq, freq2, amp, ZAPduration, dt);
 			break;

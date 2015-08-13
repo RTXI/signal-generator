@@ -24,7 +24,6 @@
 #include <gen_zap.h>
 #include <math.h>
 #include <string>
-#include <QtGui>
 
 class SigGen : public DefaultGUIModel
 {
