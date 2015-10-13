@@ -28,7 +28,9 @@ createRTXIPlugin(void)
 }
 
 static SigGen::variable_t vars[] = {
-	{ "Signal Waveform", "Signal Waveform", DefaultGUIModel::OUTPUT, },
+	{ 
+		"Signal Waveform", "Signal Waveform", DefaultGUIModel::OUTPUT, 
+	},
 	{
 		"Delay (s)", "Delay (s)", DefaultGUIModel::PARAMETER
 			| DefaultGUIModel::DOUBLE,
@@ -134,6 +136,7 @@ void SigGen::update(DefaultGUIModel::update_flags_t flag)
 		case PAUSE:
 			output(0) = 0.0;
 			zapWave.setIndex(0);
+			initStimulus();
 			break;
 		case UNPAUSE:
 			break;
@@ -158,7 +161,6 @@ void SigGen::initParameters()
 
 void SigGen::initStimulus()
 {
-
 	switch (mode) {
 		case SINE:
 			sineWave.clear();
