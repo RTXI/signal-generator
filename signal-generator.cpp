@@ -76,7 +76,7 @@ SigGen::SigGen(void) :
 	customizeGUI();
 	update(INIT);
 	refresh();
-	resizeMe();
+	QTimer::singleShot(0, this,	SLOT(resizeMe()));
 }
 
 SigGen::~SigGen(void)
