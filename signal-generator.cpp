@@ -89,18 +89,23 @@ void SigGen::execute(void)
 		case SINE:
 			output(0) = sineWave.get();
 			break;
+
 		case MONOSQUARE:
 			output(0) = monoWave.get();
 			break;
+
 		case BISQUARE: 
 			output(0) = biWave.get();
 			break;
+
 		case SAWTOOTH: 
 			output(0) = sawWave.get();
 			break;
+
 		case ZAP:
 			output(0) = zapWave.getOne();
 			break;
+
 		default:
 			output(0) = 0;
 			break;
@@ -120,6 +125,7 @@ void SigGen::update(DefaultGUIModel::update_flags_t flag)
 			waveShape->setCurrentIndex(0);
 			updateMode(0);
 			break;
+
 		case MODIFY:
 			delay = getParameter("Delay (s)").toDouble();
 			freq = getParameter("Freq (Hz)").toDouble();
@@ -130,16 +136,20 @@ void SigGen::update(DefaultGUIModel::update_flags_t flag)
 			mode = mode_t(waveShape->currentIndex());
 			initStimulus();
 			break;
+
 		case PERIOD:
 			dt = RT::System::getInstance()->getPeriod() * 1e-9; // time in seconds
 			initStimulus();
+
 		case PAUSE:
 			output(0) = 0.0;
 			zapWave.setIndex(0);
 			initStimulus();
 			break;
+
 		case UNPAUSE:
 			break;
+
 		default:
 			break;
 	}
@@ -166,22 +176,27 @@ void SigGen::initStimulus()
 			sineWave.clear();
 			sineWave.init(freq, amp, dt);
 			break;
+
 		case MONOSQUARE: 
 			monoWave.clear();
 			monoWave.init(delay, width, amp, dt);
 			break;
+
 		case BISQUARE: 
 			biWave.clear();
 			biWave.init(delay, width, amp, dt);
 			break;
+
 		case SAWTOOTH:
 			sawWave.clear();
 			sawWave.init(delay, width, amp, dt);
 			break;
+
 		case ZAP: 
 			zapWave.clear();
 			zapWave.init(freq, freq2, amp, ZAPduration, dt);
 			break;
+
 		default:
 			break;
 	}
