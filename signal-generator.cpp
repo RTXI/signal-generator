@@ -16,12 +16,10 @@
 
  */
 
-#include "signal-generator.h"
 #include <math.h>
-#include <default_gui_model.h>
-#include <main_window.h>
+#include "signal-generator.h"
 
-	extern "C" Plugin::Object *
+extern "C" Plugin::Object *
 createRTXIPlugin(void)
 {
 	return new SigGen();

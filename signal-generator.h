@@ -16,29 +16,25 @@
 
  */
 
-#include <default_gui_model.h>
-#include <gen_sine.h>
-#include <gen_mono.h>
-#include <gen_biphase.h>
-#include <gen_saw.h>
-#include <gen_zap.h>
 #include <math.h>
-#include <string>
+#include <QComboBox>
+#include <rtxi/gen/gen_sine.h>
+#include <rtxi/gen/gen_mono.h>
+#include <rtxi/gen/gen_biphase.h>
+#include <rtxi/gen/gen_saw.h>
+#include <rtxi/gen/gen_zap.h>
+#include <rtxi/module.hpp>
 
-class SigGen : public DefaultGUIModel
+namespace SigGen {
+class Panel : public Modules::Panel
 {
-
-    Q_OBJECT
-
 public:
 
-    SigGen(void);
-    virtual
-    ~SigGen(void);
+    Panel();
+    virtual ~Panel();
 
-    void
-    execute(void);
-    void customizeGUI(void);
+    void execute();
+    void customizeGUI();
 
     enum mode_t {
         SINE=0, MONOSQUARE, BISQUARE, SAWTOOTH, ZAP,
@@ -50,15 +46,12 @@ signals: // custom signals
 
 protected:
 
-    virtual void
-    update(DefaultGUIModel::update_flags_t);
+    virtual void update();
 
 private:
 
-    void
-    initParameters();
-    void
-    initStimulus(); // creates SigGen stimuli
+    void initParameters();
+    void initStimulus(); // creates SigGen stimuli
 
     double freq;
     double delay;
@@ -82,6 +75,7 @@ private:
 
 private slots:
 
-    void
-    updateMode(int);
+    void updateMode(int);
 };
+
+}
