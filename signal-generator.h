@@ -26,48 +26,114 @@
 #include <rtxi/module.hpp>
 
 namespace SigGen {
+
+constexpr std::string_view MODULE_NAME = "Signal Generator";
+
+enum PARAMETER : Modules::Variable::Id
+{
+    SIGNAL_WAVEFORM = 0,
+    DELAY,
+    WIDTH,
+    FREQ,
+    AMPLITUDE,
+    ZAP_MAX_FREQ,
+    ZAP_DURATION,
+    STATE
+};
+
+inline std::vector<Modules::Variable::Info> get_default_vars()
+{
+    return 
+    {
+	{ 
+            PARAMETER::SIGNAL_WAVEFORM,
+            "Signal Waveform", 
+            "Signal Waveform", 
+            Modules::Variable::DOUBLE_PARAMETER, 
+            0.0
+	},
+	{
+            PARAMETER::DELAY,
+            "Delay (s)", 
+            "Delay (s)",
+            Modules::Variable::DOUBLE_PARAMETER,
+            0.0
+	},
+	{
+            PARAMETER::WIDTH,
+	    "Width (s)", 
+            "Width (s)", 
+            Modules::Variable::DOUBLE_PARAMETER,
+            0.0
+	},
+	{
+            PARAMETER::FREQ,
+            "Freq (Hz)", 
+            "Freq (Hz), also used as minimum ZAP frequency",
+	    Modules::Variable::DOUBLE_PARAMETER,
+            0.0
+	},
+	{
+            PARAMETER::AMPLITUDE,
+            "Amplitude (V)", 
+            "Amplitude (V)", 
+            Modules::Variable::DOUBLE_PARAMETER,
+            0.0
+	},
+	{
+            PARAMETER::ZAP_MAX_FREQ,
+	    "ZAP max Freq (Hz)", 
+            "Maximum ZAP frequency",
+	    Modules::Variable::DOUBLE_PARAMETER,
+            0.0
+	},
+	{
+            PARAMETER::ZAP_DURATION,
+	    "ZAP duration (s)", 
+            "ZAP duration (s)", 
+            Modules::Variable::DOUBLE_PARAMETER,
+            0.0
+	},
+        {
+            PARAMETER::STATE,
+            "Plugin State",
+            "The current state of the plugin. Refer to Modules::Variable::state_t",
+            Modules::Variable::STATE,
+            Modules::Variable::INIT
+        }
+    };
+}
+
+inline std::vector<IO::channel_t> get_default_channels()
+{
+    return 
+    {
+        {
+            "Signal Generator Output",
+            "Signal Generator Output",
+            IO::OUTPUT,
+            1
+        }
+    };
+}
+
 class Panel : public Modules::Panel
 {
+    Q_OBJECT
 public:
+    Panel(QMainWindow* main_window, 
+          Event::Manager* ev_manager);
 
-    Panel();
-    virtual ~Panel();
-
-    void execute();
     void customizeGUI();
 
-    enum mode_t {
-        SINE=0, MONOSQUARE, BISQUARE, SAWTOOTH, ZAP,
-    };
-
-public slots:
-
-signals: // custom signals
-
 protected:
-
-    virtual void update();
+    void update(Modules::Variable::state_t flag) override;
 
 private:
 
     void initParameters();
     void initStimulus(); // creates SigGen stimuli
 
-    double freq;
-    double delay;
-    double width;
-    double amp;
-    double freq2;
-    double ZAPduration;
-    mode_t mode;
-
-    GeneratorSine sineWave;
-    GeneratorMono monoWave;
-    GeneratorBiphase biWave;
-    GeneratorSaw sawWave;
-    GeneratorZap zapWave;
-
-    double dt;
 
     // QT components
     QPushButton *sineButton;
@@ -78,4 +144,37 @@ private slots:
     void updateMode(int);
 };
 
-}
+class Component : public Modules::Component
+{
+public:
+    explicit Component(Modules::Plugin* hplugin);
+    void execute() override;
+private:
+    enum mode_t {
+        SINE=0, MONOSQUARE, BISQUARE, SAWTOOTH, ZAP,
+    };
+
+    GeneratorSine sineWave;
+    GeneratorMono monoWave;
+    GeneratorBiphase biWave;
+    GeneratorSaw sawWave;
+    GeneratorZap zapWave;
+
+    //double freq;
+    //double delay;
+    //double width;
+    //double amp;
+    //double freq2;
+    //double ZAPduration;
+
+    double dt;
+    mode_t mode;
+};
+
+class Plugin : public Modules::Plugin
+{
+public:
+   explicit Plugin(Event::Manager* ev_manager); 
+};
+
+} // namespace SigGen

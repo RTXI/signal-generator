@@ -19,46 +19,38 @@
 #include <math.h>
 #include "signal-generator.h"
 
-extern "C" Plugin::Object *
-createRTXIPlugin(void)
+std::unique_ptr<Modules::Plugin> createRTXIPlugin(Event::Manager* ev_manager)
 {
-	return new SigGen();
+  return std::make_unique<SigGen::Plugin>(ev_manager);
 }
 
-static SigGen::variable_t vars[] = {
-	{ 
-		"Signal Waveform", "Signal Waveform", DefaultGUIModel::OUTPUT, 
-	},
-	{
-		"Delay (s)", "Delay (s)", DefaultGUIModel::PARAMETER
-			| DefaultGUIModel::DOUBLE,
-	},
-	{
-		"Width (s)", "Width (s)", DefaultGUIModel::PARAMETER
-			| DefaultGUIModel::DOUBLE,
-	},
-	{
-		"Freq (Hz)", "Freq (Hz), also used as minimum ZAP frequency",
-		DefaultGUIModel::PARAMETER | DefaultGUIModel::DOUBLE,
-	},
-	{
-		"Amplitude (V)", "Amplitude (V)", DefaultGUIModel::PARAMETER
-			| DefaultGUIModel::DOUBLE,
-	},
-	{
-		"ZAP max Freq (Hz)", "Maximum ZAP frequency",
-		DefaultGUIModel::PARAMETER | DefaultGUIModel::DOUBLE,
-	},
-	{
-		"ZAP duration (s)", "ZAP duration (s)", DefaultGUIModel::PARAMETER
-			| DefaultGUIModel::DOUBLE,
-	},
+Modules::Panel* createRTXIPanel(QMainWindow* main_window,
+                                Event::Manager* ev_manager)
+{
+  return new SigGen::Panel(main_window, ev_manager);
+}
+
+std::unique_ptr<Modules::Component> createRTXIComponent(
+    Modules::Plugin* host_plugin)
+{
+  return std::make_unique<SigGen::Component>(host_plugin);
+}
+
+Modules::FactoryMethods fact;
+
+extern "C"
+{
+Modules::FactoryMethods* getFactories()
+{
+  fact.createPanel = &createRTXIPanel;
+  fact.createComponent = &createRTXIComponent;
+  fact.createPlugin = &createRTXIPlugin;
+  return &fact;
+}
 };
 
-static size_t num_vars = sizeof(vars) / sizeof(DefaultGUIModel::variable_t);
-
-SigGen::SigGen(void) :
-	DefaultGUIModel("Signal Generator", ::vars, ::num_vars)
+SigGen::Panel::Panel(QMainWindow* main_window, Event::Manager* ev_manager) :
+	Modules::Panel(std::string(SigGen::MODULE_NAME), main_window, ev_manager)
 {
 	setWhatsThis(
 			"<p><b>Signal Generator:</b></p><p>Generates noise of the type specified with the relevant parameters:<br><br>"
@@ -70,51 +62,57 @@ SigGen::SigGen(void) :
 			"The ZAP stimulus has the duration specified. All other signals are continuous signals.</p>");
 	initParameters();
 	initStimulus();
-	DefaultGUIModel::createGUI(vars, num_vars); // this is required to create the GUI
+	this->createGUI(SigGen::get_default_vars(), main_window); // this is required to create the GUI
 	customizeGUI();
-	update(INIT);
+	update(Modules::Variable::INIT);
 	refresh();
-	QTimer::singleShot(0, this,	SLOT(resizeMe()));
+	//QTimer::singleShot(0, this, SLOT(resizeMe()));
 }
 
-SigGen::~SigGen(void)
+SigGen::Component::Component(Modules::Plugin* hplugin)
+	: Modules::Component(hplugin,
+			     std::string(SigGen::MODULE_NAME),
+			     SigGen::get_default_channels(),
+			     SigGen::get_default_vars())
 {
 }
 
-void SigGen::execute(void)
+void SigGen::Component::execute()
 {
-	switch (mode) {
+	switch (this->mode) {
 		case SINE:
-			output(0) = sineWave.get();
+			writeoutput(0, {sineWave.get()});
 			break;
 
 		case MONOSQUARE:
-			output(0) = monoWave.get();
+			writeoutput(0, {monoWave.get()});
 			break;
 
 		case BISQUARE: 
-			output(0) = biWave.get();
+			writeoutput(0, {biWave.get()});
 			break;
 
 		case SAWTOOTH: 
-			output(0) = sawWave.get();
+			writeoutput(0, {sawWave.get()});
 			break;
 
 		case ZAP:
-			output(0) = zapWave.getOne();
+			writeoutput(0, {zapWave.getOne()});
 			break;
 
 		default:
-			output(0) = 0;
+			writeoutput(0, {0});
 			break;
 	}
 }
 
-void SigGen::update(DefaultGUIModel::update_flags_t flag)
+void SigGen::Panel::update(Modules::Variable::state_t flag)
 {
+	Modules::Plugin* hplugin = this->getHostPlugin();
 	switch (flag) {
 		case INIT:
-			setParameter("Freq (Hz)", QString::number(freq));
+			hplugin->setComponentParameter<double>(SigGen::PARAMETER::FREQ, 
+							       QString::number(freq));
 			setParameter("ZAP max Freq (Hz)", QString::number(freq2));
 			setParameter("ZAP duration (s)", QString::number(ZAPduration));
 			setParameter("Delay (s)", QString::number(delay));
