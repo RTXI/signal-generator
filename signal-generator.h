@@ -117,6 +117,9 @@ public:
 
   void customizeGUI();
 
+public slots:
+  void refresh() override;
+
 protected:
   void update(Modules::Variable::state_t flag) override;
 

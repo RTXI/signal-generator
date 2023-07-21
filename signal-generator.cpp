@@ -176,9 +176,15 @@ void SigGen::Panel::updateMode(int index)
   this->getHostPlugin()->setComponentParameter(SigGen::PARAMETER::STATE, Modules::Variable::MODIFY); 
 }
 
+void SigGen::Panel::refresh()
+{
+}
+
 void SigGen::Panel::customizeGUI()
 {
-  QGridLayout* customlayout = this->m_layout;
+  // This may throw if we end up changing the default gui
+  // layout from horizontal to something else (like grid)
+  auto* widget_layout = dynamic_cast<QVBoxLayout*>(this->layout());
 
   auto* modeBox = new QGroupBox("Signal Type");
   auto* modeBoxLayout = new QVBoxLayout(modeBox);
@@ -191,6 +197,7 @@ void SigGen::Panel::customizeGUI()
   waveShape->insertItem(4, "Zap Stimulus");
   QObject::connect(
       waveShape, SIGNAL(activated(int)), this, SLOT(updateMode(int)));
-  customlayout->addWidget(modeBox, 0, 0);
-  setLayout(customlayout);
+  widget_layout->insertWidget(0, modeBox);
+  setLayout(widget_layout);
+  this->getMdiWindow()->setFixedSize(this->minimumSizeHint());
 }
