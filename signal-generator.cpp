@@ -87,9 +87,10 @@ void SigGen::Component::execute()
 {
   switch (this->getValue<Modules::Variable::state_t>(SigGen::PARAMETER::STATE)) {
     case Modules::Variable::EXEC:
-      writeoutput(0, {this->current_generator->get()});
+      writeoutput(0, this->current_generator->get());
+      break;
     case Modules::Variable::INIT:
-      this->initParameters();
+      this->initStimulus();
       this->setValue(SigGen::PARAMETER::STATE, Modules::Variable::EXEC);
       break;
     case Modules::Variable::MODIFY:
@@ -102,10 +103,10 @@ void SigGen::Component::execute()
       this->setValue(SigGen::PARAMETER::STATE, Modules::Variable::EXEC);
       break;
     case Modules::Variable::PAUSE:
-      writeoutput(0, {0});
-      zapWave.setIndex(0);
+      writeoutput(0, 0);
       break;
     case Modules::Variable::UNPAUSE:
+      zapWave.setIndex(0);
       this->setValue(SigGen::PARAMETER::STATE, Modules::Variable::EXEC);
       break;
     default:
