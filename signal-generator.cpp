@@ -128,6 +128,7 @@ void SigGen::Component::initParameters()
   this->setValue<double>(SigGen::PARAMETER::ZAP_MAX_FREQ, 20); // Hz
   this->setValue<double>(SigGen::PARAMETER::ZAP_DURATION, 10); //s
   this->dt = RT::OS::getPeriod() * 1e-9; // s
+  this->initStimulus();
 }
 
 void SigGen::Component::initStimulus()
