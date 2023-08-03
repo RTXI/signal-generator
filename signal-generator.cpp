@@ -80,6 +80,7 @@ SigGen::Component::Component(Modules::Plugin* hplugin)
                          std::string(SigGen::MODULE_NAME),
                          SigGen::get_default_channels(),
                          SigGen::get_default_vars())
+    , dt(static_cast<double>(RT::OS::getPeriod()) * 1e-9)
 {
 }
 
@@ -98,7 +99,7 @@ void SigGen::Component::execute()
       this->setValue(SigGen::PARAMETER::STATE, Modules::Variable::EXEC);
       break;
     case Modules::Variable::PERIOD:
-      this->dt = RT::OS::getPeriod() * 1e-9;  // time in seconds
+      this->dt = static_cast<double>(RT::OS::getPeriod()) * 1e-9;  // time in seconds
       initStimulus();
       this->setValue(SigGen::PARAMETER::STATE, Modules::Variable::EXEC);
       break;
@@ -121,14 +122,14 @@ void SigGen::Panel::update(Modules::Variable::state_t flag)
 
 void SigGen::Component::initParameters()
 {
-  this->setValue<double>(SigGen::PARAMETER::FREQ, 1); // Hz
-  this->setValue<double>(SigGen::PARAMETER::AMPLITUDE, 1);
-  this->setValue<double>(SigGen::PARAMETER::WIDTH, 1); // s
-  this->setValue<double>(SigGen::PARAMETER::DELAY, 1); // s
+  this->setValue<double>(SigGen::PARAMETER::FREQ, 1.0); // Hz
+  this->setValue<double>(SigGen::PARAMETER::AMPLITUDE, 1.0);
+  this->setValue<double>(SigGen::PARAMETER::WIDTH, 1.0); // s
+  this->setValue<double>(SigGen::PARAMETER::DELAY, 1.0); // s
   this->setValue<int64_t>(SigGen::PARAMETER::SIGNAL_WAVEFORM, SigGen::WAVEMODE::SINE);
-  this->setValue<double>(SigGen::PARAMETER::ZAP_MAX_FREQ, 20); // Hz
-  this->setValue<double>(SigGen::PARAMETER::ZAP_DURATION, 10); //s
-  this->dt = RT::OS::getPeriod() * 1e-9; // s
+  this->setValue<double>(SigGen::PARAMETER::ZAP_MAX_FREQ, 20.0); // Hz
+  this->setValue<double>(SigGen::PARAMETER::ZAP_DURATION, 10.0); //s
+  this->dt = static_cast<double>(RT::OS::getPeriod()) * 1e-9; // s
   this->initStimulus();
 }
 
@@ -140,6 +141,7 @@ void SigGen::Component::initStimulus()
   auto width = getValue<double>(SigGen::PARAMETER::WIDTH);
   auto amp = getValue<double>(SigGen::PARAMETER::AMPLITUDE);
   auto zap_duration = getValue<double>(SigGen::PARAMETER::ZAP_DURATION);
+  this->dt = static_cast<double>(RT::OS::getPeriod()) * 1e-9; // s
   switch (this->getValue<int64_t>(SigGen::PARAMETER::SIGNAL_WAVEFORM)) {
     case SigGen::WAVEMODE::SINE:
       this->sineWave.clear();
