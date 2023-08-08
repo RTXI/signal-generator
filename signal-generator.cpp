@@ -69,7 +69,7 @@ SigGen::Panel::Panel(QMainWindow* main_window, Event::Manager* ev_manager)
       "The ZAP stimulus has the duration specified. All other signals are "
       "continuous signals.</p>");
   createGUI(SigGen::get_default_vars(),
-            {SIGNAL_WAVEFORM, STATE});  // this is required to create the GUI
+            {SIGNAL_WAVEFORM});  // this is required to create the GUI
   customizeGUI();
   //update(Modules::Variable::INIT);
   //refresh();
@@ -86,38 +86,33 @@ SigGen::Component::Component(Modules::Plugin* hplugin)
 
 void SigGen::Component::execute()
 {
-  switch (this->getValue<Modules::Variable::state_t>(SigGen::PARAMETER::STATE)) {
-    case Modules::Variable::EXEC:
+  switch (this->getState()) {
+    case RT::State::EXEC:
       writeoutput(0, this->current_generator->get());
       break;
-    case Modules::Variable::INIT:
+    case RT::State::INIT:
       this->initStimulus();
-      this->setValue(SigGen::PARAMETER::STATE, Modules::Variable::EXEC);
+      this->setState(RT::State::EXEC);
       break;
-    case Modules::Variable::MODIFY:
+    case RT::State::MODIFY:
       initStimulus();
-      this->setValue(SigGen::PARAMETER::STATE, Modules::Variable::EXEC);
+      this->setState(RT::State::EXEC);
       break;
-    case Modules::Variable::PERIOD:
+    case RT::State::PERIOD:
       this->dt = static_cast<double>(RT::OS::getPeriod()) * 1e-9;  // time in seconds
       initStimulus();
-      this->setValue(SigGen::PARAMETER::STATE, Modules::Variable::EXEC);
+      this->setState(RT::State::EXEC);
       break;
-    case Modules::Variable::PAUSE:
+    case RT::State::PAUSE:
       writeoutput(0, 0);
       break;
-    case Modules::Variable::UNPAUSE:
+    case RT::State::UNPAUSE:
       zapWave.setIndex(0);
-      this->setValue(SigGen::PARAMETER::STATE, Modules::Variable::EXEC);
+      this->setState(RT::State::EXEC);
       break;
     default:
       break;
   }
-}
-
-void SigGen::Panel::update(Modules::Variable::state_t flag)
-{
-  this->getHostPlugin()->setComponentParameter(SigGen::PARAMETER::STATE, flag);
 }
 
 void SigGen::Component::initParameters()
@@ -176,8 +171,9 @@ void SigGen::Component::initStimulus()
 void SigGen::Panel::updateMode(int index)
 {
   auto wave_type = static_cast<SigGen::WAVEMODE::mode_t>(index);
+  this->update_state(RT::State::PAUSE);
   this->getHostPlugin()->setComponentParameter(SigGen::PARAMETER::SIGNAL_WAVEFORM, wave_type);
-  this->getHostPlugin()->setComponentParameter(SigGen::PARAMETER::STATE, Modules::Variable::MODIFY); 
+  this->update_state(RT::State::MODIFY); 
 }
 
 void SigGen::Panel::refresh()

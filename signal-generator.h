@@ -53,7 +53,6 @@ enum PARAMETER : Modules::Variable::Id
   AMPLITUDE,
   ZAP_MAX_FREQ,
   ZAP_DURATION,
-  STATE
 };
 
 inline  std::vector<Modules::Variable::Info> get_default_vars() 
@@ -94,12 +93,7 @@ inline  std::vector<Modules::Variable::Info> get_default_vars()
        "ZAP duration (s)",
        "ZAP duration (s)",
        Modules::Variable::DOUBLE_PARAMETER,
-       10.0},
-      {PARAMETER::STATE,
-       "Plugin State",
-       "The current state of the plugin. Refer to Modules::Variable::state_t",
-       Modules::Variable::STATE,
-       Modules::Variable::INIT},
+       10.0}
   };
 }
 
@@ -119,9 +113,6 @@ public:
 
 public slots:
   void refresh() override;
-
-protected:
-  void update(Modules::Variable::state_t flag) override;
 
 private:
   // QT components
