@@ -100,7 +100,7 @@ inline  std::vector<Modules::Variable::Info> get_default_vars()
 inline std::vector<IO::channel_t> get_default_channels()
 {
   return {
-      {"Signal Generator Output", "Signal Generator Output", IO::OUTPUT, 1}};
+      {"Signal Generator Output", "Signal Generator Output", IO::OUTPUT}};
 }
 
 class Panel : public Modules::Panel
