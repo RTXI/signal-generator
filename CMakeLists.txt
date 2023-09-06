@@ -10,10 +10,11 @@ project(
 
 # These lines help with third-party tooling integration
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(RTXI_PACKAGE_PATH "/usr/local/" CACHE PATH "Path hint to RTXI package information")
 list(APPEND CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
 
 # ---- find libraries ----
-find_package(rtxi REQUIRED HINTS "../../../build/test")
+find_package(rtxi REQUIRED HINTS ${RTXI_PACKAGE_PATH})
 find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets)
 find_package(Boost REQUIRED)
 set(CMAKE_AUTOMOC ON)
