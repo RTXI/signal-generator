@@ -36,5 +36,10 @@ target_link_libraries(signal_generator PUBLIC
 get_target_property(REQUIRED_COMPILE_FEATURE rtxi::rtxi INTERFACE_COMPILE_FEATURES)
 target_compile_features(signal_generator PRIVATE ${REQUIRED_COMPILE_FEATURE})
 
+install(
+    TARGETS signal_generator
+    DESTINATION ${RTXI_PACKAGE_PATH}/bin/rtxi_modules
+)
+
 target_compile_definitions(signal_generator PRIVATE BOOST_STACKTRACE_USE_ADDR2LINE)
 target_compile_definitions(signal_generator PRIVATE BOOST_STACKTRACE_USE_BACKTRACE)
