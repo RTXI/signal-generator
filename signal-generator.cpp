@@ -138,27 +138,27 @@ void SigGen::Component::initStimulus()
   auto zap_duration = getValue<double>(SigGen::PARAMETER::ZAP_DURATION);
   this->dt = static_cast<double>(RT::OS::getPeriod()) * 1e-9; // s
   switch (this->getValue<int64_t>(SigGen::PARAMETER::SIGNAL_WAVEFORM)) {
-    case SigGen::WAVEMODE::SINE:
+    case static_cast<int64_t>(SigGen::WAVEMODE::SINE):
       this->sineWave.clear();
       this->sineWave.init(freq, amp, this->dt);
       this->current_generator = &this->sineWave;
       break;
-    case SigGen::WAVEMODE::MONOSQUARE:
+    case static_cast<int64_t>(SigGen::WAVEMODE::MONOSQUARE):
       this->monoWave.clear();
       this->monoWave.init(delay, width, amp, this->dt);
       this->current_generator = &this->monoWave;
       break;
-    case SigGen::WAVEMODE::BISQUARE:
+    case static_cast<int64_t>(SigGen::WAVEMODE::BISQUARE):
       biWave.clear();
       biWave.init(delay, width, amp, this->dt);
       this->current_generator = &this->biWave;
       break;
-    case SigGen::WAVEMODE::SAWTOOTH:
+    case static_cast<int64_t>(SigGen::WAVEMODE::SAWTOOTH):
       sawWave.clear();
       sawWave.init(delay, width, amp, this->dt);
       this->current_generator = &this->sawWave;
       break;
-    case SigGen::WAVEMODE::ZAP:
+    case static_cast<int64_t>(SigGen::WAVEMODE::ZAP):
       zapWave.clear();
       zapWave.init(freq, max_zap_freq, amp, zap_duration, this->dt);
       this->current_generator = &this->zapWave;
@@ -172,7 +172,7 @@ void SigGen::Panel::updateMode(int index)
 {
   auto wave_type = static_cast<SigGen::WAVEMODE::mode_t>(index);
   this->update_state(RT::State::PAUSE);
-  this->getHostPlugin()->setComponentParameter(SigGen::PARAMETER::SIGNAL_WAVEFORM, wave_type);
+  this->getHostPlugin()->setComponentParameter<int64_t>(SigGen::PARAMETER::SIGNAL_WAVEFORM, wave_type);
   this->update_state(RT::State::MODIFY); 
 }
 

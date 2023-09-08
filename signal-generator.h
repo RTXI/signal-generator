@@ -34,7 +34,7 @@ constexpr std::string_view MODULE_NAME = "Signal Generator";
 
 namespace WAVEMODE
 {
-enum mode_t : int
+enum mode_t : int64_t
 {
   SINE = 0,
   MONOSQUARE,
