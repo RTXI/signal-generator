@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 
 project(
-    signal_generator
+    signal-generator
     VERSION 0.1.0
     DESCRIPTION "Generate simple waveforms"
     HOMEPAGE_URL "https://rtxi.org/"
@@ -22,24 +22,24 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 add_library(
-    signal_generator MODULE
+    signal-generator MODULE
     signal-generator.cpp
     signal-generator.h
 )
 
-target_link_libraries(signal_generator PUBLIC 
+target_link_libraries(signal-generator PUBLIC 
     rtxi::rtxi rtxi::rtdsp rtxi::rtgen rtxi::xfifo Qt5::Core Qt5::Gui Qt5::Widgets 
     Boost::headers backtrace dl 
 )
 
 # We need to tell cmake to use the c++ version used to compile the dependent library or else...
 get_target_property(REQUIRED_COMPILE_FEATURE rtxi::rtxi INTERFACE_COMPILE_FEATURES)
-target_compile_features(signal_generator PRIVATE ${REQUIRED_COMPILE_FEATURE})
+target_compile_features(signal-generator PRIVATE ${REQUIRED_COMPILE_FEATURE})
 
 install(
-    TARGETS signal_generator
+    TARGETS signal-generator
     DESTINATION ${RTXI_PACKAGE_PATH}/bin/rtxi_modules
 )
 
-target_compile_definitions(signal_generator PRIVATE BOOST_STACKTRACE_USE_ADDR2LINE)
-target_compile_definitions(signal_generator PRIVATE BOOST_STACKTRACE_USE_BACKTRACE)
+target_compile_definitions(signal-generator PRIVATE BOOST_STACKTRACE_USE_ADDR2LINE)
+target_compile_definitions(signal-generator PRIVATE BOOST_STACKTRACE_USE_BACKTRACE)
