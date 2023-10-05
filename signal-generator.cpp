@@ -19,28 +19,28 @@
 #include "signal-generator.h"
 #include <math.h>
 
-std::unique_ptr<Modules::Plugin> createRTXIPlugin(Event::Manager* ev_manager)
+std::unique_ptr<Widgets::Plugin> createRTXIPlugin(Event::Manager* ev_manager)
 {
   return std::make_unique<SigGen::Plugin>(ev_manager);
 }
 
-Modules::Panel* createRTXIPanel(QMainWindow* main_window,
+Widgets::Panel* createRTXIPanel(QMainWindow* main_window,
                                 Event::Manager* ev_manager)
 {
   return new SigGen::Panel(main_window, ev_manager);
 }
 
-std::unique_ptr<Modules::Component> createRTXIComponent(
-    Modules::Plugin* host_plugin)
+std::unique_ptr<Widgets::Component> createRTXIComponent(
+    Widgets::Plugin* host_plugin)
 {
   return std::make_unique<SigGen::Component>(host_plugin);
 }
 
-Modules::FactoryMethods fact;
+Widgets::FactoryMethods fact;
 
 extern "C"
 {
-Modules::FactoryMethods* getFactories()
+Widgets::FactoryMethods* getFactories()
 {
   fact.createPanel = &createRTXIPanel;
   fact.createComponent = &createRTXIComponent;
@@ -50,12 +50,12 @@ Modules::FactoryMethods* getFactories()
 };
 
 SigGen::Plugin::Plugin(Event::Manager* ev_manager)
-    : Modules::Plugin(ev_manager, std::string(SigGen::MODULE_NAME))
+    : Widgets::Plugin(ev_manager, std::string(SigGen::MODULE_NAME))
 {
 }
 
 SigGen::Panel::Panel(QMainWindow* main_window, Event::Manager* ev_manager)
-    : Modules::Panel(std::string(SigGen::MODULE_NAME), main_window, ev_manager)
+    : Widgets::Panel(std::string(SigGen::MODULE_NAME), main_window, ev_manager)
 {
   setWhatsThis(
       "<p><b>Signal Generator:</b></p><p>Generates noise of the type specified "
@@ -71,12 +71,12 @@ SigGen::Panel::Panel(QMainWindow* main_window, Event::Manager* ev_manager)
   createGUI(SigGen::get_default_vars(),
             {SIGNAL_WAVEFORM});  // this is required to create the GUI
   customizeGUI();
-  //update(Modules::Variable::INIT);
+  //update(Widgets::Variable::INIT);
   //refresh();
 }
 
-SigGen::Component::Component(Modules::Plugin* hplugin)
-    : Modules::Component(hplugin,
+SigGen::Component::Component(Widgets::Plugin* hplugin)
+    : Widgets::Component(hplugin,
                          std::string(SigGen::MODULE_NAME),
                          SigGen::get_default_channels(),
                          SigGen::get_default_vars())

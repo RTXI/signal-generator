@@ -25,7 +25,7 @@
 #include <rtxi/gen/gen_saw.h>
 #include <rtxi/gen/gen_sine.h>
 #include <rtxi/gen/gen_zap.h>
-#include <rtxi/module.hpp>
+#include <rtxi/widgets.hpp>
 
 namespace SigGen
 {
@@ -44,7 +44,7 @@ enum mode_t : int64_t
 };
 }  // namespace WAVEMODE
 
-enum PARAMETER : Modules::Variable::Id
+enum PARAMETER : Widgets::Variable::Id
 {
   SIGNAL_WAVEFORM = 0,
   DELAY,
@@ -55,44 +55,44 @@ enum PARAMETER : Modules::Variable::Id
   ZAP_DURATION,
 };
 
-inline  std::vector<Modules::Variable::Info> get_default_vars() 
+inline  std::vector<Widgets::Variable::Info> get_default_vars() 
 {
   return {
       {PARAMETER::SIGNAL_WAVEFORM,
        "Signal Waveform",
        "The current type of signal being generated. Current types are sine, "
        "monosquare, bisquare, sawtooth, and zap",     
-       Modules::Variable::INT_PARAMETER,
+       Widgets::Variable::INT_PARAMETER,
        0},
       {PARAMETER::DELAY,
        "Delay (s)",
        "Delay (s)",
-       Modules::Variable::DOUBLE_PARAMETER,
+       Widgets::Variable::DOUBLE_PARAMETER,
        1.0},
       {PARAMETER::WIDTH,
        "Width (s)",
        "Width (s)",
-       Modules::Variable::DOUBLE_PARAMETER,
+       Widgets::Variable::DOUBLE_PARAMETER,
        1.0},
       {PARAMETER::FREQ,
        "Freq (Hz)",
        "Freq (Hz), also used as minimum ZAP frequency",
-       Modules::Variable::DOUBLE_PARAMETER,
+       Widgets::Variable::DOUBLE_PARAMETER,
        1.0},
       {PARAMETER::AMPLITUDE,
        "Amplitude (V)",
        "Amplitude (V)",
-       Modules::Variable::DOUBLE_PARAMETER,
+       Widgets::Variable::DOUBLE_PARAMETER,
        1.0},
       {PARAMETER::ZAP_MAX_FREQ,
        "ZAP max Freq (Hz)",
        "Maximum ZAP frequency",
-       Modules::Variable::DOUBLE_PARAMETER,
+       Widgets::Variable::DOUBLE_PARAMETER,
        20.0},
       {PARAMETER::ZAP_DURATION,
        "ZAP duration (s)",
        "ZAP duration (s)",
-       Modules::Variable::DOUBLE_PARAMETER,
+       Widgets::Variable::DOUBLE_PARAMETER,
        10.0}
   };
 }
@@ -103,7 +103,7 @@ inline std::vector<IO::channel_t> get_default_channels()
       {"Signal Generator Output", "Signal Generator Output", IO::OUTPUT}};
 }
 
-class Panel : public Modules::Panel
+class Panel : public Widgets::Panel
 {
   Q_OBJECT
 public:
@@ -124,10 +124,10 @@ private slots:
   void updateMode(int);
 };
 
-class Component : public Modules::Component
+class Component : public Widgets::Component
 {
 public:
-  explicit Component(Modules::Plugin* hplugin);
+  explicit Component(Widgets::Plugin* hplugin);
   void execute() override;
 
 private:
@@ -145,7 +145,7 @@ private:
   mode_t mode;
 };
 
-class Plugin : public Modules::Plugin
+class Plugin : public Widgets::Plugin
 {
 public:
   explicit Plugin(Event::Manager* ev_manager);
