@@ -23,13 +23,13 @@ set(CMAKE_AUTOUIC ON)
 
 add_library(
     signal-generator MODULE
-    signal-generator.cpp
-    signal-generator.h
+    widget.cpp
+    widget.hpp
 )
 
 target_link_libraries(signal-generator PUBLIC 
     rtxi::rtxi rtxi::rtdsp rtxi::rtgen rtxi::xfifo Qt5::Core Qt5::Gui Qt5::Widgets 
-    Boost::headers backtrace dl 
+    Boost::headers dl 
 )
 
 # We need to tell cmake to use the c++ version used to compile the dependent library or else...
@@ -41,5 +41,3 @@ install(
     DESTINATION ${RTXI_PACKAGE_PATH}/bin/rtxi_modules
 )
 
-target_compile_definitions(signal-generator PRIVATE BOOST_STACKTRACE_USE_ADDR2LINE)
-target_compile_definitions(signal-generator PRIVATE BOOST_STACKTRACE_USE_BACKTRACE)
