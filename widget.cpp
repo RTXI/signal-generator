@@ -16,7 +16,7 @@
 
  */
 
-#include "signal-generator.h"
+#include "widget.hpp"
 #include <math.h>
 
 std::unique_ptr<Widgets::Plugin> createRTXIPlugin(Event::Manager* ev_manager)
