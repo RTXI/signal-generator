@@ -11,10 +11,10 @@ project(
 # These lines help with third-party tooling integration
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(RTXI_CMAKE_SCRIPTS "" CACHE PATH "In development mode, RTXI uses this to expose depenendencies")
+set(RTXI_CMAKE_SCRIPTS "" CACHE PATH "In development mode, RTXI uses this to expose conan depenendencies")
 set(CMAKE_PREFIX_PATH "${RTXI_CMAKE_SCRIPTS}")
 set(RTXI_PACKAGE_PATH "/usr/local/" CACHE PATH "Path hint to RTXI package information")
-set(CMAKE_INSTALL_RPATH "${RTXI_PACKAGE_PATH}/lib/rtxi")
+set(CMAKE_INSTALL_RPATH "${RTXI_PACKAGE_PATH}/lib")
 list(APPEND CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
 
 # ---- find libraries ----
@@ -33,7 +33,7 @@ add_library(
 )
 
 target_link_libraries(signal-generator PUBLIC 
-    rtxi::rtxi rtxi::rtdsp rtxi::rtgen rtxi::xfifo Qt5::Core Qt5::Gui Qt5::Widgets 
+    rtxi::rtxi rtxi::rtxidsp rtxi::rtxigen rtxi::rtxififo Qt5::Core Qt5::Gui Qt5::Widgets 
     Boost::headers dl fmt::fmt
 )
 
