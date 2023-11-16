@@ -1,9 +1,9 @@
-###Signal Generator
+### Signal Generator
 
 **Requirements:** Generator class (included)  
 **Limitations:** none noted   
 
-![Signal Generator GUI](signal-generator.png)  
+![Signal Generator GUI](https://github.com/RTXI/signal-generator/blob/master/signal-generator.png)  
 
 <!--start-->
 This module generates the following signals:  
@@ -16,10 +16,10 @@ This module generates the following signals:
 All the signals are continuous except for the ZAP stimulus, which has a specified duration. Only the relevant parameters are used to generate the waveforms. 
 <!--end-->
 
-####Output Channels
+#### Output Channels
 1. output(0) – “Signal Waveform”  
 
-####Parameters
+#### Parameters
 1. Delay : in seconds  
 2. Width : in seconds  
 3. Freq (Hz) : frequency of sine wave, also the starting frequency for ZAP stimulus  
