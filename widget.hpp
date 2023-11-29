@@ -63,7 +63,7 @@ inline  std::vector<Widgets::Variable::Info> get_default_vars()
        "The current type of signal being generated. Current types are sine, "
        "monosquare, bisquare, sawtooth, and zap",     
        Widgets::Variable::INT_PARAMETER,
-       0},
+       int64_t{0}},
       {PARAMETER::DELAY,
        "Delay (s)",
        "Delay (s)",
