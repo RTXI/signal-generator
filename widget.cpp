@@ -96,7 +96,7 @@ void SigGen::Component::execute()
       break;
     case RT::State::MODIFY:
       initStimulus();
-      this->setState(RT::State::EXEC);
+      this->setState(RT::State::PAUSE);
       break;
     case RT::State::PERIOD:
       this->dt = static_cast<double>(RT::OS::getPeriod()) * 1e-9;  // time in seconds
