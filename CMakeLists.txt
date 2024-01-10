@@ -21,7 +21,6 @@ list(APPEND CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_
 find_package(rtxi REQUIRED HINTS ${RTXI_PACKAGE_PATH})
 find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets HINTS ${RTXI_CMAKE_SCRIPTS})
 find_package(fmt REQUIRED)
-find_package(Boost REQUIRED)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
@@ -34,7 +33,7 @@ add_library(
 
 target_link_libraries(signal-generator PUBLIC 
     rtxi::rtxi rtxi::rtxidsp rtxi::rtxigen rtxi::rtxififo Qt5::Core Qt5::Gui Qt5::Widgets 
-    Boost::headers dl fmt::fmt
+    dl fmt::fmt
 )
 
 # We need to tell cmake to use the c++ version used to compile the dependent library or else...
