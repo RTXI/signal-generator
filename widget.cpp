@@ -16,8 +16,14 @@
 
  */
 
+#include <QGroupBox>
+#include <QMdiSubWindow>
+#include <QVBoxLayout>
+
 #include "widget.hpp"
+
 #include <math.h>
+#include <rtxi/rtos.hpp>
 
 std::unique_ptr<Widgets::Plugin> createRTXIPlugin(Event::Manager* ev_manager)
 {
@@ -71,8 +77,8 @@ SigGen::Panel::Panel(QMainWindow* main_window, Event::Manager* ev_manager)
   createGUI(SigGen::get_default_vars(),
             {SIGNAL_WAVEFORM});  // this is required to create the GUI
   customizeGUI();
-  //update(Widgets::Variable::INIT);
-  //refresh();
+  // update(Widgets::Variable::INIT);
+  // refresh();
 }
 
 SigGen::Component::Component(Widgets::Plugin* hplugin)
@@ -99,7 +105,8 @@ void SigGen::Component::execute()
       this->setState(RT::State::PAUSE);
       break;
     case RT::State::PERIOD:
-      this->dt = static_cast<double>(RT::OS::getPeriod()) * 1e-9;  // time in seconds
+      this->dt =
+          static_cast<double>(RT::OS::getPeriod()) * 1e-9;  // time in seconds
       initStimulus();
       this->setState(RT::State::EXEC);
       break;
@@ -117,14 +124,15 @@ void SigGen::Component::execute()
 
 void SigGen::Component::initParameters()
 {
-  this->setValue<double>(SigGen::PARAMETER::FREQ, 1.0); // Hz
+  this->setValue<double>(SigGen::PARAMETER::FREQ, 1.0);  // Hz
   this->setValue<double>(SigGen::PARAMETER::AMPLITUDE, 1.0);
-  this->setValue<double>(SigGen::PARAMETER::WIDTH, 1.0); // s
-  this->setValue<double>(SigGen::PARAMETER::DELAY, 1.0); // s
-  this->setValue<int64_t>(SigGen::PARAMETER::SIGNAL_WAVEFORM, SigGen::WAVEMODE::SINE);
-  this->setValue<double>(SigGen::PARAMETER::ZAP_MAX_FREQ, 20.0); // Hz
-  this->setValue<double>(SigGen::PARAMETER::ZAP_DURATION, 10.0); //s
-  this->dt = static_cast<double>(RT::OS::getPeriod()) * 1e-9; // s
+  this->setValue<double>(SigGen::PARAMETER::WIDTH, 1.0);  // s
+  this->setValue<double>(SigGen::PARAMETER::DELAY, 1.0);  // s
+  this->setValue<int64_t>(SigGen::PARAMETER::SIGNAL_WAVEFORM,
+                          SigGen::WAVEMODE::SINE);
+  this->setValue<double>(SigGen::PARAMETER::ZAP_MAX_FREQ, 20.0);  // Hz
+  this->setValue<double>(SigGen::PARAMETER::ZAP_DURATION, 10.0);  // s
+  this->dt = static_cast<double>(RT::OS::getPeriod()) * 1e-9;  // s
   this->initStimulus();
 }
 
@@ -136,7 +144,7 @@ void SigGen::Component::initStimulus()
   auto width = getValue<double>(SigGen::PARAMETER::WIDTH);
   auto amp = getValue<double>(SigGen::PARAMETER::AMPLITUDE);
   auto zap_duration = getValue<double>(SigGen::PARAMETER::ZAP_DURATION);
-  this->dt = static_cast<double>(RT::OS::getPeriod()) * 1e-9; // s
+  this->dt = static_cast<double>(RT::OS::getPeriod()) * 1e-9;  // s
   switch (this->getValue<int64_t>(SigGen::PARAMETER::SIGNAL_WAVEFORM)) {
     case static_cast<int64_t>(SigGen::WAVEMODE::SINE):
       this->sineWave.clear();
@@ -172,13 +180,12 @@ void SigGen::Panel::updateMode(int index)
 {
   auto wave_type = static_cast<SigGen::WAVEMODE::mode_t>(index);
   this->update_state(RT::State::PAUSE);
-  this->getHostPlugin()->setComponentParameter<int64_t>(SigGen::PARAMETER::SIGNAL_WAVEFORM, wave_type);
-  this->update_state(RT::State::MODIFY); 
+  this->getHostPlugin()->setComponentParameter<int64_t>(
+      SigGen::PARAMETER::SIGNAL_WAVEFORM, wave_type);
+  this->update_state(RT::State::MODIFY);
 }
 
-void SigGen::Panel::refresh()
-{
-}
+void SigGen::Panel::refresh() {}
 
 void SigGen::Panel::customizeGUI()
 {

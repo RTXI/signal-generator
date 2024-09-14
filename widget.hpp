@@ -19,7 +19,6 @@
 #include <QComboBox>
 #include <string>
 
-#include <math.h>
 #include <rtxi/gen/gen_biphase.h>
 #include <rtxi/gen/gen_mono.h>
 #include <rtxi/gen/gen_saw.h>
