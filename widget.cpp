@@ -185,7 +185,7 @@ void SigGen::Panel::updateMode(int index)
   this->update_state(RT::State::MODIFY);
 }
 
-void SigGen::Panel::refresh() {}
+// void SigGen::Panel::refresh() {}
 
 void SigGen::Panel::customizeGUI()
 {

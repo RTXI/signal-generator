@@ -111,7 +111,7 @@ public:
   void customizeGUI();
 
 public slots:
-  void refresh() override;
+  // void refresh() override;
 
 private:
   // QT components
